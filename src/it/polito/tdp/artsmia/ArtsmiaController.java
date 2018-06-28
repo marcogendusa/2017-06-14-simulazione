@@ -6,6 +6,8 @@ package it.polito.tdp.artsmia;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import it.polito.tdp.artsmia.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
@@ -21,16 +23,24 @@ public class ArtsmiaController {
     private URL location;
 
     @FXML // fx:id="boxAnno"
-    private ChoiceBox<?> boxAnno; // Value injected by FXMLLoader
+    private ChoiceBox<Integer> boxAnno; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtFieldStudenti"
     private TextField txtFieldStudenti; // Value injected by FXMLLoader
 
     @FXML // fx:id="txtResult"
     private TextArea txtResult; // Value injected by FXMLLoader
+    
+    
+    private Model model;
+    
 
     @FXML
     void handleCreaGrafo(ActionEvent event) {
+    		txtResult.clear();
+    		int year = this.boxAnno.getValue();
+    		model.creaGrafo(year);
+    		txtResult.appendText("La mostra con il maggior numero di opere esposte e': "+model.getBiggestExhibition(year).toString());
 
     }
 
@@ -46,4 +56,10 @@ public class ArtsmiaController {
         assert txtResult != null : "fx:id=\"txtResult\" was not injected: check your FXML file 'Artsmia.fxml'.";
 
     }
+
+	public void setModel(Model model) {
+		this.model = model;
+		this.boxAnno.getItems().addAll(model.getYears());
+		
+	}
 }
